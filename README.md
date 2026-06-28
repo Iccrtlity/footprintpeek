@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# FootprintPeek
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Client-side browser privacy auditor**
 
-Currently, two official plugins are available:
+See how unique and trackable your browser fingerprint is — completely private, no data leaves your device.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Screenshot](https://i.postimg.cc/vmG7wG5H/Footprint-Peek.jpg) 
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Real-time browser fingerprint analysis
+- Privacy score (0-100)
+- Easy-to-understand results
+- 100% client-side (nothing is sent to any server)
+- Built with React + TypeScript + Tailwind
 
-- Configure the top-level `parserOptions` property like this:
+## How to Use
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. Visit the [live demo](https://iccrtlity.github.io/footprintpeek)
+2. Click "Start Scan"
+3. Review your fingerprint and recommendations
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Tech Stack
+
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- Pure client-side JavaScript APIs
+
+## Privacy
+
+This tool runs entirely in your browser. No analytics, no tracking, no server communication.
+
+## Built by
+
+[Iccrtlity](https://github.com/Iccrtlity)
+
+---
+
+**Star this repo if you find it useful!** Contributions welcome.
