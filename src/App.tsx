@@ -45,6 +45,18 @@ function App() {
     return Math.max(20, Math.round(s));
   };
 
+  const shareResults = () => {
+    const text = `My browser privacy score: ${score}/100\n\nCheck yours at: https://Iccrtlity.github.io/footprintpeek/`;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Results copied to clipboard!");
+    });
+  };
+
+  const postToX = () => {
+    const text = `My browser privacy score: ${score}/100 on FootprintPeek`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=https://Iccrtlity.github.io/footprintpeek/`, '_blank');
+  };
+
   const runAudit = async () => {
     setLoading(true);
 
@@ -63,7 +75,6 @@ function App() {
 
     const privacyScore = calculateScore(data);
 
-    // IP Lookup
     let ipData: IpData | null = null;
     try {
       const res = await fetch('https://ipapi.co/json/');
@@ -149,12 +160,27 @@ function App() {
               </ul>
             </div>
 
-            <button 
-              onClick={() => window.location.reload()} 
-              className="w-full py-3.5 border rounded-xl hover:bg-zinc-100 transition"
-            >
-              Run New Scan
-            </button>
+            {/* More space before buttons */}
+            <div className="pt-12 flex gap-3">
+              <button 
+                onClick={() => window.location.reload()} 
+                className="flex-1 py-3.5 border border-zinc-300 rounded-xl hover:bg-zinc-100 transition text-sm"
+              >
+                New Scan
+              </button>
+              <button 
+                onClick={shareResults}
+                className="flex-1 py-3.5 bg-zinc-900 text-white rounded-xl hover:bg-black transition text-sm"
+              >
+                Copy
+              </button>
+              <button 
+                onClick={postToX}
+                className="flex-1 py-3.5 bg-black text-white rounded-xl hover:bg-zinc-800 transition flex items-center justify-center gap-1 text-sm"
+              >
+                <span>𝕏</span> Post
+              </button>
+            </div>
           </div>
         )}
       </div>
