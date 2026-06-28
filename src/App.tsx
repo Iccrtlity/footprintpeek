@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './index.css';
 
 interface FingerprintData {
   userAgent: string;
@@ -14,8 +13,16 @@ interface FingerprintData {
   canvas: string;
 }
 
+interface IpData {
+  ip: string;
+  country: string;
+  city: string;
+  isp: string;
+}
+
 function App() {
   const [results, setResults] = useState<FingerprintData | null>(null);
+  const [ipInfo, setIpInfo] = useState<IpData | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -56,11 +63,27 @@ function App() {
 
     const privacyScore = calculateScore(data);
 
+    // IP Lookup
+    let ipData: IpData | null = null;
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const ip = await res.json();
+      ipData = {
+        ip: ip.ip,
+        country: ip.country_name || 'Unknown',
+        city: ip.city || 'Unknown',
+        isp: ip.org || 'Unknown'
+      };
+    } catch (e) {
+      console.log('IP lookup unavailable');
+    }
+
     setTimeout(() => {
       setResults(data);
+      setIpInfo(ipData);
       setScore(privacyScore);
       setLoading(false);
-    }, 700);
+    }, 800);
   };
 
   return (
@@ -84,7 +107,7 @@ function App() {
         )}
 
         {loading && (
-          <div className="text-center py-12 text-zinc-500">Analyzing browser...</div>
+          <div className="text-center py-12 text-zinc-500">Analyzing...</div>
         )}
 
         {results && score !== null && (
@@ -94,28 +117,43 @@ function App() {
               <p className="text-sm uppercase tracking-widest text-zinc-500">Privacy Score</p>
             </div>
 
+            {ipInfo && (
+              <div className="bg-white border rounded-2xl p-8">
+                <h3 className="font-medium mb-4">Network Info</h3>
+                <div className="grid grid-cols-2 gap-y-3 text-sm">
+                  <div><strong>IP Address</strong></div>
+                  <div>{ipInfo.ip}</div>
+                  <div><strong>Country</strong></div>
+                  <div>{ipInfo.country}</div>
+                  <div><strong>City</strong></div>
+                  <div>{ipInfo.city}</div>
+                  <div><strong>ISP</strong></div>
+                  <div>{ipInfo.isp}</div>
+                </div>
+              </div>
+            )}
+
             <div className="bg-white border rounded-2xl p-8">
-              <h3 className="font-medium mb-4">Detected Fingerprint</h3>
+              <h3 className="font-medium mb-4">Browser Fingerprint</h3>
               <pre className="bg-zinc-100 p-5 rounded-xl text-sm overflow-auto">
                 {JSON.stringify(results, null, 2)}
               </pre>
             </div>
 
             <div className="bg-white border rounded-2xl p-8">
-              <h3 className="font-medium mb-4">What you can do</h3>
+              <h3 className="font-medium mb-4">Recommendations</h3>
               <ul className="space-y-4 text-sm">
-                <li className="flex items-start gap-3">• Use a privacy-focused browser like Brave or Firefox</li>
-                <li className="flex items-start gap-3">• Install an ad/tracker blocker</li>
-                <li className="flex items-start gap-3">• Clear your cookies and cache regularly</li>
-                <li className="flex items-start gap-3">• Use a reputable VPN</li>
+                <li>• Use Brave or Firefox with strong tracker blocking</li>
+                <li>• Use a reputable VPN (changes IP section above)</li>
+                <li>• Clear cookies and site data often</li>
               </ul>
             </div>
 
-            <button
-              onClick={() => window.location.reload()}
+            <button 
+              onClick={() => window.location.reload()} 
               className="w-full py-3.5 border rounded-xl hover:bg-zinc-100 transition"
             >
-              Scan Again
+              Run New Scan
             </button>
           </div>
         )}
